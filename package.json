@@ -1,0 +1,24 @@
+{
+  "private": false,
+  "name": "vue-data-browser",
+  "version": "0.0.1",
+  "description": "Browse data",
+  "main": "index.js",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "files": [
+    "dist/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mentorgashi/vue-data-browser.git"
+  },
+  "author": "mentorgashi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mentorgashi/vue-data-browser/issues"
+  },
+  "homepage": "https://github.com/mentorgashi/vue-data-browser#readme"
+}
