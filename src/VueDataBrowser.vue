@@ -5,7 +5,7 @@
 </template>
 <script>
 	import ItemBrowser from "./item/ItemBrowser.vue";
-	import ListBrowser from "./item/ItemBrowser.vue";
+	import ListBrowser from "./list/ListBrowser.vue";
 	export default {
 		name: "VueDataBrowser",
 		components: { ItemBrowser, ListBrowser },
@@ -17,6 +17,11 @@
 			view: {
 				type: String,
 				default: "table"
+			}
+		},
+		computed: {
+			dataBrowsing() {
+				return typeof this.data === "object" ? "item-browser" : "list-browser";
 			}
 		}
 	}
