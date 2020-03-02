@@ -1,18 +1,23 @@
 <template>
-	<div>
-		<h3> Test </h3>
-	</div>
+	<component v-bind:is="dataBrowser" :data="data" :view="view"></component>
 </template>
 <script>
-	import ItemBrowser from "./item/ItemBrowser.vue";
 	import ListBrowser from "./list/ListBrowser.vue";
+	import ItemBrowser from "./item/ItemBrowser.vue";
+
 	export default {
 		name: "VueDataBrowser",
-		components: { ItemBrowser, ListBrowser },
+		components: { ListBrowser, ItemBrowser },
 		props: {
 			data: {
-				type: [Object, Array],
-				required: true
+				type: [Array, Object],
+				required: true,
+				default() {
+					return [
+						{ name: "John", surname: "Doe", age: 45 },
+						{ name: "Jane", surname: "Doe", age: 38 },
+					]
+				}
 			},
 			view: {
 				type: String,
@@ -20,8 +25,8 @@
 			}
 		},
 		computed: {
-			dataBrowsing() {
-				return typeof this.data === "object" ? "item-browser" : "list-browser";
+			dataBrowser() {
+				return Array.isArray(this.data) ? "list-browser" : "item-browser";
 			}
 		}
 	}
