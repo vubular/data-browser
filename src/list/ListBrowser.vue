@@ -1,5 +1,10 @@
 <template>
-	<component v-bind:is="viewType" :data="data"></component>
+	<div>
+		<button class="button" @click="changeView('list')">List</button>
+		<button class="button" @click="changeView('table')">Table</button>
+		<button class="button" @click="changeView('grid')">Grid</button>
+		<component v-bind:is="viewType" :data="data"></component>
+	</div>
 </template>
 <script>
 	import ListView from "./views/ListView.vue";
@@ -11,20 +16,25 @@
 		components: { ListView, TableView, GridView },
 		props: {
 			data: {
-				type: [Array, Object]
-			},
-			view: {
-				type: String,
-				default: "table"
+				type: Array
 			}
 		},
 		computed: {
 			viewType() {
 				var viewType = "table-view";
-				if(this.view == 'list') viewType = "list-view";
-				if(this.view == 'grid') viewType = "grid-view";
-
+				if(this.viewMode == 'list') viewType = "list-view";
+				if(this.viewMode == 'grid') viewType = "grid-view";
 				return viewType;
+			}
+		},
+		methods: {
+			changeView(mode){
+				this.viewMode = mode;
+			}
+		},
+		data(){
+			return {
+				viewMode: 'list'
 			}
 		}
 	}

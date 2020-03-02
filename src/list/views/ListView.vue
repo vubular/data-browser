@@ -1,8 +1,21 @@
 <template>
-	<div></div>
+	<div>
+		<ul>
+			<li v-for="(value, key) in data" :key="key">
+				<span v-for="(propValue, propName) in value" :key="propName">
+					<span class="title">{{propName}}: {{propValue}}</span><br/>
+				</span>
+			</li>
+		</ul>
+	</div>
 </template>
 <script>
 	export default {
-		name: "ListView"
+		name: "ListView",
+		props: {
+			data: {
+				type: Array
+			}
+		},
 	}
 </script>
