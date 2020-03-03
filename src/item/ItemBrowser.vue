@@ -1,8 +1,13 @@
 <template>
-	<div></div>
+	<div>{{data}}</div>
 </template>
 <script>
 	export default {
-		name: "ItemBrowser"
+		name: "ItemBrowser",
+		props: {
+			data: {
+				type: Object
+			}
+		},
 	}
 </script>
