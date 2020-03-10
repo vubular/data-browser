@@ -1,11 +1,30 @@
 <template>
 	<div>
-		<button class="button" @click="changeView('list')">List</button>
-		<button class="button" @click="changeView('table')">Table</button>
-		<button class="button" @click="changeView('grid')">Grid</button>
+		<div class="columns">
+			<div class="column">
+				<button type="button" class="button" @click="changeView('list')">List</button>
+				<button type="button" class="button" @click="changeView('table')">Table</button>
+				<button type="button" class="button" @click="changeView('grid')">Grid</button>
+			</div>
+			<div class="column">
+				<input v-model="search" class="input" placeholder="Search...">
+			</div>
+			<div class="column">
+				<div class="select">
+					<select>
+						<option>a</option>
+					</select>
+				</div>
+			</div>
+		</div>
 		<component v-bind:is="viewType" :data="data"></component>
 	</div>
 </template>
+<style>
+.button{
+	margin-right:10px;
+}
+</style>
 <script>
 	import ListView from "./views/ListView.vue";
 	import TableView from "./views/TableView.vue";
@@ -30,11 +49,15 @@
 		methods: {
 			changeView(mode){
 				this.viewMode = mode;
+			},
+			test(a){
+				console.log(a)
 			}
 		},
 		data(){
 			return {
-				viewMode: 'list'
+				viewMode: 'list',
+				search: ''
 			}
 		}
 	}

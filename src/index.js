@@ -1,5 +1,5 @@
 // Import vue component
-import VueDataBrowser component from './VueDataBrowser.vue';
+import VueDataBrowser from './VueDataBrowser.vue';
 
 export {
 	VueDataBrowser as VueDataBrowser

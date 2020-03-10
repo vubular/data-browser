@@ -1,5 +1,5 @@
 <template>
-	<table class="table">
+	<table class="table is-fullwidth">
 		<tr>
 			<th v-for="(value, propertyName) in data[0]" :key="propertyName">{{propertyName}}</th>
 		</tr>
