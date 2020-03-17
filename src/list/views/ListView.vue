@@ -9,6 +9,11 @@
 		</ul>
 	</div>
 </template>
+<style>
+li{
+	padding-bottom:10px;
+}
+</style>
 <script>
 	export default {
 		name: "ListView",

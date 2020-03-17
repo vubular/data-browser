@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="columns is-multiline">
 		<div class="column is-3" v-for="(value, key) in data" :key="key">
 			<span v-for="(propValue, propName) in value" :key="propName">
 				<span class="title">{{propName}}</span><br/>
