@@ -58,6 +58,9 @@
 							if(value && typeof value === 'string' && value.toLowerCase().includes(this.searchValue.toLowerCase())){
 								show = true;
 							}
+							if(value && typeof value === 'number' && value===+this.searchValue){
+								show = true;
+							}
 						})
 						return show;
 					});
