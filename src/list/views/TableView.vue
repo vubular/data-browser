@@ -1,15 +1,17 @@
 <template>
 	<table class="table is-fullwidth">
 		<tr>
+			<th></th>
 			<th v-for="(value, propertyName) in data[0]" :key="propertyName">{{propertyName}}</th>
 		</tr>
 		<tr v-for="(value,key)  in data" :key="key">
+			<td>{{key+1}}</td>
 			<td v-for="(propValue, propName) in value" :key="propName">
 				{{propValue}}
 			</td>
 		</tr>
 	</table>
-
+ 
 <!-- 	<table>
 		{{data}}
 		<slot name="thead">

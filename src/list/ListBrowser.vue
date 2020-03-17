@@ -7,12 +7,13 @@
 				<button type="button" class="button" @click="changeView('grid')">Grid</button>
 			</div>
 			<div class="column">
-				<input v-model="search" class="input" placeholder="Search...">
+				<input v-model="searchValue" :keyup="search()" class="input" placeholder="Search...">
 			</div>
 			<div class="column">
 				<div class="select">
 					<select>
-						<option>a</option>
+						<option>All fields</option>
+						<option v-for="(value, propertyName) in data[0]" :key="propertyName">{{propertyName}}</option>
 					</select>
 				</div>
 			</div>
@@ -50,14 +51,14 @@
 			changeView(mode){
 				this.viewMode = mode;
 			},
-			test(a){
-				console.log(a)
+			search(){
+				console.log(this.searchValue)
 			}
 		},
 		data(){
 			return {
 				viewMode: 'list',
-				search: ''
+				searchValue: ''
 			}
 		}
 	}
