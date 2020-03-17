@@ -18,7 +18,7 @@
 				</div>
 			</div>
 		</div>
-		<component v-bind:is="viewType" :data="data"></component>
+		<component v-bind:is="viewType" :data="filteredList"></component>
 	</div>
 </template>
 <style>
@@ -45,6 +45,23 @@
 				if(this.viewMode == 'list') viewType = "list-view";
 				if(this.viewMode == 'grid') viewType = "grid-view";
 				return viewType;
+			},
+			filteredList(){
+				if(this.searchValue===''){
+					return this.data;
+				}
+				else{
+					return this.data.filter(item => {
+						let show = false
+						Object.values(item).forEach(value => {
+							console.log(typeof value)
+							if(value && typeof value === 'string' && value.toLowerCase().includes(this.searchValue.toLowerCase())){
+								show = true;
+							}
+						})
+						return show;
+					});
+				}
 			}
 		},
 		methods: {
