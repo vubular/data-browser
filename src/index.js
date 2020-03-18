@@ -1,6 +1,7 @@
 // Import vue component
-import VueDataBrowser from './VueDataBrowser.vue';
-
-export {
-	VueDataBrowser as VueDataBrowser
-}
+import Component from ‘./VueDataBrowser.vue’;
+export default {
+	install(Vue, options) {
+		Vue.component(Component.name, Component)
+	}
+};
