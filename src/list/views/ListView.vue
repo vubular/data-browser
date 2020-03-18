@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<ul>
+		<ul class="list">
 			<li v-for="(value, key) in data" :key="key">
 				<span v-for="(propValue, propName) in value" :key="propName">
 					<span class="title">{{propName}}: {{propValue}}</span><br/>
@@ -10,8 +10,8 @@
 	</div>
 </template>
 <style>
-li{
-	padding-bottom:10px;
+ul.list li{
+	padding-bottom:20px;
 }
 </style>
 <script>

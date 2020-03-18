@@ -2,9 +2,9 @@
 	<div class="box">
 		<div class="columns">
 			<div class="column is-narrow">
-				<button type="button" class="button" @click="changeView('list')">List</button>
-				<button type="button" class="button" @click="changeView('table')">Table</button>
-				<button type="button" class="button" @click="changeView('grid')">Grid</button>
+				<button type="button" class="button" :class="{'is-active': viewMode==='list'}" @click="changeView('list')">List</button>
+				<button type="button" class="button" :class="{'is-active': viewMode==='table'}" @click="changeView('table')">Table</button>
+				<button type="button" class="button" :class="{'is-active': viewMode==='grid'}" @click="changeView('grid')">Grid</button>
 			</div>
 			<div class="column">
 				<input v-model="searchValue" :keyup="search()" class="input" placeholder="Search...">
@@ -24,6 +24,9 @@
 <style>
 .button{
 	margin-right:10px;
+}
+option{
+	text-transform:capitalize;
 }
 </style>
 <script>

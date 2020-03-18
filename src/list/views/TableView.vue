@@ -11,7 +11,7 @@
 			</td>
 		</tr>
 	</table>
- 
+
 <!-- 	<table>
 		{{data}}
 		<slot name="thead">
@@ -30,6 +30,11 @@
 		<slot></slot>
 	</table> -->
 </template>
+<style>
+th{
+	text-transform: capitalize;
+}
+</style>
 <script>
 	export default {
 		name: "TableView",
