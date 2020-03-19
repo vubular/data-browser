@@ -1,9 +1,9 @@
 <template>
 	<div>
 		<ul class="list">
-			<li v-for="(value, key) in data" :key="key">
+			<li v-for="(value, key) in data" :key="key" class="section">
 				<span v-for="(propValue, propName) in value" :key="propName">
-					<span class="title">{{propName}}: {{propValue}}</span><br/>
+					<span><span class="has-text-weight-bold">{{propName}}:</span> {{propValue}}</span><br/>
 				</span>
 			</li>
 		</ul>
