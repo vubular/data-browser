@@ -11,9 +11,9 @@
 			</div>
 			<div class="column is-narrow">
 				<div class="select">
-					<select>
-						<option>All fields</option>
-						<option v-for="(value, propertyName) in data[0]" :key="propertyName">{{propertyName}}</option>
+					<select v-model="searchField">
+						<option value="">All fields</option>
+						<option v-for="(value, propertyName) in data[0]" :key="propertyName" :value="propertyName">{{propertyName}}</option>
 					</select>
 				</div>
 			</div>
@@ -52,21 +52,29 @@ option{
 			filteredList(){
 				if(this.searchValue===''){
 					return this.data;
-				}
-				else{
-					return this.data.filter(item => {
-						let show = false
-						Object.values(item).forEach(value => {
-							console.log(typeof value)
-							if(value && typeof value === 'string' && value.toLowerCase().includes(this.searchValue.toLowerCase())){
-								show = true;
-							}
-							if(value && typeof value === 'number' && value===+this.searchValue){
-								show = true;
+				} else {
+					if(this.searchField===''){
+						return this.data.filter(item => {
+							let show = false
+							Object.values(item).forEach(value => {
+								console.log(typeof value)
+								if(value && typeof value === 'string' && value.toLowerCase().includes(this.searchValue.toLowerCase())){
+									show = true;
+								}
+								if(value && typeof value === 'number' && value===+this.searchValue){
+									show = true;
+								}
+							})
+							return show;
+						});
+					} else {
+						return this.data.filter(item => {
+							if(item[this.searchField]) {
+								return item[this.searchField].toLowerCase().includes(this.searchValue.toLowerCase());
 							}
 						})
-						return show;
-					});
+					}
+				
 				}
 			}
 		},
@@ -81,7 +89,8 @@ option{
 		data(){
 			return {
 				viewMode: 'list',
-				searchValue: ''
+				searchValue: '',
+				searchField: ''
 			}
 		}
 	}
