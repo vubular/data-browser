@@ -21,6 +21,9 @@
 			},
 			columnNames: {
 				type: Object
+			},
+			showRowNumber: {
+				type: Boolean
 			}
 		},
 		method: {

@@ -34,7 +34,7 @@
 				</label>
 			</div>
 		</div>
-		<component v-bind:is="viewType" :data="filteredList" :columnNames="columnNames"></component>
+		<component v-bind:is="viewType" :data="filteredList" :columnNames="columnNames" :showRowNumber="showRowNumber"></component>
 	</div>
 </template>
 <style>
@@ -56,6 +56,9 @@
 			},
 			columnNames: {
 				type: Object
+			},
+			showRowNumber: {
+				type: Boolean
 			}
 		},
 		computed: {

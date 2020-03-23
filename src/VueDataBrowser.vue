@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<component v-bind:is="dataBrowser" :data="data" :columnNames="columnNames"></component>
+		<component v-bind:is="dataBrowser" :data="data" :columnNames="columnNames" :showRowNumber="showRowNumber"></component>
 	</div>	
 </template>
 <script>
@@ -27,6 +27,12 @@
 			},
 			columnNames: {
 				type: Object
+			},
+			showRowNumber: {
+				type: Boolean,
+				default(){
+					return false
+				}
 			}
 		},
 		computed: {
