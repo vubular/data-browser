@@ -2,6 +2,15 @@
 	<div class="box">
 		<div class="columns">
 			<div class="column is-narrow">
+				<button type="button" class="button" @click="toggleKeys = !toggleKeys">
+					<span class="icon is-medium">
+						<i class="fal fa-ellipsis-h-alt"></i>
+					</span>
+					<span>{{'Fields' | translate}}</span>
+				</button>
+			</div>
+
+			<div class="column is-narrow">
 				<button type="button" class="button" :class="{'is-active': viewMode==='list'}" @click="changeView('list')">List</button>
 				<button type="button" class="button" :class="{'is-active': viewMode==='table'}" @click="changeView('table')">Table</button>
 				<button type="button" class="button" :class="{'is-active': viewMode==='grid'}" @click="changeView('grid')">Grid</button>
@@ -13,20 +22,24 @@
 				<div class="select">
 					<select v-model="searchField">
 						<option value="">All fields</option>
-						<option v-for="(value, propertyName) in data[0]" :key="propertyName" :value="propertyName">{{propertyName}}</option>
+						<option v-for="(value, propertyName) in data[0]" :key="propertyName" :value="propertyName" class="is-capitalized">{{propertyName}}</option>
 					</select>
 				</div>
 			</div>
 		</div>
-		<component v-bind:is="viewType" :data="filteredList"></component>
+		<div class="columns is-multiline" v-if="toggleKeys">
+			<div class="column is-narrow" v-for="(value, key) in columnNames" :key="key">
+				<label>
+					<b-checkbox v-model="columnNames[key]" class="is-capitalized">{{ key }}</b-checkbox>
+				</label>
+			</div>
+		</div>
+		<component v-bind:is="viewType" :data="filteredList" :columnNames="columnNames"></component>
 	</div>
 </template>
 <style>
 .button{
 	margin-right:10px;
-}
-option{
-	text-transform:capitalize;
 }
 </style>
 <script>
@@ -40,6 +53,9 @@ option{
 		props: {
 			data: {
 				type: Array
+			},
+			columnNames: {
+				type: Object
 			}
 		},
 		computed: {
@@ -57,7 +73,6 @@ option{
 						return this.data.filter(item => {
 							let show = false
 							Object.values(item).forEach(value => {
-								console.log(typeof value)
 								if(value && typeof value === 'string' && value.toLowerCase().includes(this.searchValue.toLowerCase())){
 									show = true;
 								}
@@ -83,14 +98,14 @@ option{
 				this.viewMode = mode;
 			},
 			search(){
-				console.log(this.searchValue)
 			}
 		},
 		data(){
 			return {
 				viewMode: 'list',
 				searchValue: '',
-				searchField: ''
+				searchField: '',
+				toggleKeys: false,
 			}
 		}
 	}

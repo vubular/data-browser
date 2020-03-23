@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<component v-bind:is="dataBrowser" :data="data"></component>
+		<component v-bind:is="dataBrowser" :data="data" :columnNames="columnNames"></component>
 	</div>	
 </template>
 <script>
@@ -24,6 +24,9 @@
 						{ name: "Melissa", surname: "Musk", age: 68 }
 					]
 				}
+			},
+			columnNames: {
+				type: Object
 			}
 		},
 		computed: {
