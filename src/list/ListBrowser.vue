@@ -1,7 +1,7 @@
 <template>
 	<div class="box">
 		<div class="columns">
-			<div class="column is-narrow">
+			<div class="column is-narrow" v-if="showFieldToggle">
 				<button type="button" class="button" @click="toggleKeys = !toggleKeys">
 					<span class="icon is-medium">
 						<i class="fal fa-ellipsis-h-alt"></i>
@@ -58,6 +58,9 @@
 				type: Object
 			},
 			showRowNumber: {
+				type: Boolean
+			},
+			showFieldToggle: {
 				type: Boolean
 			}
 		},

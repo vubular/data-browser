@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<component v-bind:is="dataBrowser" :data="data" :columnNames="columnNames" :showRowNumber="showRowNumber"></component>
+		<component v-bind:is="dataBrowser" :data="data" :columnNames="columnNames" :showRowNumber="showRowNumber" :showFieldToggle="showFieldToggle"></component>
 	</div>	
 </template>
 <script>
@@ -31,6 +31,12 @@
 			showRowNumber: {
 				type: Boolean,
 				default(){
+					return false
+				}
+			},
+			showFieldToggle: {
+				type: Boolean,
+				default() {
 					return false
 				}
 			}
