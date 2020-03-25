@@ -2,11 +2,11 @@
 	<table class="table is-fullwidth">
 		<tr>
 			<th v-if="showRowNumber"></th>
-			<th v-show="columnNames[propertyName]" v-for="(value, propertyName) in data[0]" :key="propertyName" class="is-capitalized">{{propertyName}}</th>
+			<th v-show="columnNames[propName]" v-for="(value, propName) in data[0]" :key="propName" class="is-capitalized" v-if="fields.includes(propName)">{{propName}}</th>
 		</tr>
 		<tr v-for="(value,key)  in data" :key="key" v-show="anySelected">
 			<td v-if="showRowNumber">{{key+1}}</td>
-			<td v-show="columnNames[propName]"  v-for="(propValue, propName) in value" :key="propName">
+			<td v-show="columnNames[propName]"  v-for="(propValue, propName) in value" :key="propName" v-if="fields.includes(propName)">
 				{{propValue}}
 			</td>
 		</tr>
@@ -24,6 +24,9 @@
 			},
 			showRowNumber: {
 				type: Boolean
+			},
+			fields: {
+				type: Array
 			}
 		},
 		method: {

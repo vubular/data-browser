@@ -1,6 +1,6 @@
-<template>
-	<div>
-		<component v-bind:is="dataBrowser" :data="data" :columnNames="columnNames" :showRowNumber="showRowNumber" :showFieldToggle="showFieldToggle"></component>
+<template> 
+	<div>{{fields}}
+		<component v-bind:is="dataBrowser" :data="data" :columnNames="columnNames" :showRowNumber="showRowNumber" :showFieldToggle="showFieldToggle" :fields="selectedFields"></component>
 	</div>	
 </template>
 <script>
@@ -39,11 +39,26 @@
 				default() {
 					return false
 				}
+			},
+			fields: {
+				type: String,
+				default: ""
 			}
 		},
 		computed: {
 			dataBrowser() {
 				return Array.isArray(this.data) ? "list-browser" : "item-browser";
+			}
+		},
+		mounted() {
+			if(this.fields!==""){
+				this.selectedFields = this.fields.split(',');
+				console.log(1, this.selectedFields);
+			}
+		},
+		data(){
+			return {
+				selectedFields: []
 			}
 		}
 	}

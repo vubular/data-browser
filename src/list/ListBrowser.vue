@@ -34,7 +34,7 @@
 				</label>
 			</div>
 		</div>
-		<component v-bind:is="viewType" :data="filteredList" :columnNames="columnNames" :showRowNumber="showRowNumber"></component>
+		<component v-bind:is="viewType" :data="filteredList" :columnNames="columnNames" :showRowNumber="showRowNumber" :fields="fields"></component>
 	</div>
 </template>
 <style>
@@ -62,6 +62,9 @@
 			},
 			showFieldToggle: {
 				type: Boolean
+			},
+			fields: {
+				type: Array
 			}
 		},
 		computed: {
