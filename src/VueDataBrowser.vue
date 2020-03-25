@@ -1,5 +1,5 @@
 <template> 
-	<div>{{fields}}
+	<div>
 		<component v-bind:is="dataBrowser" :data="data" :columnNames="columnNames" :showRowNumber="showRowNumber" :showFieldToggle="showFieldToggle" :fields="selectedFields"></component>
 	</div>	
 </template>
