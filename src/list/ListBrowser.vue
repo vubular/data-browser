@@ -22,7 +22,7 @@
 				<div class="select">
 					<select v-model="searchField">
 						<option value="">All fields</option>
-						<option v-for="(value, propertyName) in data[0]" :key="propertyName" :value="propertyName" class="is-capitalized">{{propertyName}}</option>
+						<option v-for="(value, propName) in data[0]" :key="propName" :value="propName" class="is-capitalized" v-if="fields.includes(propName)">{{propName}}</option>
 					</select>
 				</div>
 			</div>
@@ -30,7 +30,7 @@
 		<div class="columns is-multiline" v-if="toggleKeys">
 			<div class="column is-narrow" v-for="(value, key) in columnNames" :key="key">
 				<label>
-					<b-checkbox v-model="columnNames[key]" class="is-capitalized">{{ key }}</b-checkbox>
+					<b-checkbox v-model="columnNames[key]" class="is-capitalized" v-if="fields.includes(key)">{{ key }}</b-checkbox>
 				</label>
 			</div>
 		</div>
