@@ -1,8 +1,7 @@
 {
-  "private": false,
-  "name": "vue-data-browser",
-  "version": "0.0.6",
-  "description": "Browse data",
+  "name": "@vubular/data-browser",
+  "version": "0.0.2",
+  "description": "vubular data browser",
   "main": "src/index.js",
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -13,12 +12,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vubular/vue-data-browser.git"
+    "url": "git+https://github.com/vubular/data-browser.git"
   },
   "author": "vubular",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/vubular/vue-data-browser/issues"
+    "url": "https://github.com/vubular/data-browser/issues"
   },
-  "homepage": "https://github.com/vubular/vue-data-browser#readme"
+  "homepage": "https://github.com/vubular/data-browser#readme"
 }

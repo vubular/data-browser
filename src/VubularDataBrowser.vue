@@ -1,14 +1,14 @@
-<template> 
+<template>
 	<div>
 		<component v-bind:is="dataBrowser" :data="data" :columnNames="columnNames" :showRowNumber="showRowNumber" :showFieldToggle="showFieldToggle" :fields="selectedFields"></component>
-	</div>	
+	</div>
 </template>
 <script>
 	import ListBrowser from "./list/ListBrowser.vue";
 	import ItemBrowser from "./item/ItemBrowser.vue";
 
 	export default {
-		name: "VueDataBrowser",
+		name: "VubularDataBrowser",
 		components: { ListBrowser, ItemBrowser },
 		props: {
 			data: {
