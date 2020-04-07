@@ -1,55 +1,29 @@
 <template>
-	<div class="box">
-		<div class="columns">
-			<div class="column is-narrow" v-if="showFieldToggle">
-				<button type="button" class="button" @click="toggleKeys = !toggleKeys">
-					<span class="icon is-medium">
-						<i class="fal fa-ellipsis-h-alt"></i>
-					</span>
-					<span>{{'Fields' | translate}}</span>
-				</button>
-			</div>
-
-			<div class="column is-narrow">
-				<button type="button" class="button" :class="{'is-active': viewMode==='list'}" @click="changeView('list')">List</button>
-				<button type="button" class="button" :class="{'is-active': viewMode==='table'}" @click="changeView('table')">Table</button>
-				<button type="button" class="button" :class="{'is-active': viewMode==='grid'}" @click="changeView('grid')">Grid</button>
-			</div>
-			<div class="column">
-				<input v-model="searchValue" :keyup="search()" class="input" placeholder="Search...">
-			</div>
-			<div class="column is-narrow">
-				<div class="select">
-					<select v-model="searchField">
-						<option value="">All fields</option>
-						<option v-for="(value, propName) in data[0]" :key="propName" :value="propName" class="is-capitalized" v-if="fields.length===0 || fields.includes(propName)">{{propName}}</option>
-					</select>
-				</div>
+	<div class="list-browser" style="margin-top:30px">
+		<div class="box is-paddingless">
+			<actions :search="search"></actions>
+			<!-- <filters></filters> -->
+			<div class="listing-items">
+				<component v-bind:is="viewType"
+					:data="filteredList"
+					:columnNames="columnNames"
+					:showRowNumber="showRowNumber"
+					:fields="fields"></component>
 			</div>
 		</div>
-		<div class="columns is-multiline" v-if="toggleKeys">
-			<div class="column is-narrow" v-for="(value, key) in columnNames" :key="key">
-				<label>
-					<b-checkbox v-model="columnNames[key]" class="is-capitalized" v-if="fields.length===0 || fields.includes(key)">{{ key }}</b-checkbox>
-				</label>
-			</div>
-		</div>
-		<component v-bind:is="viewType" :data="filteredList" :columnNames="columnNames" :showRowNumber="showRowNumber" :fields="fields"></component>
 	</div>
 </template>
-<style>
-.button{
-	margin-right:10px;
-}
-</style>
 <script>
+	import Actions from "./partials/Actions.vue";
+	import Filters from "./partials/Filters.vue";
+
 	import ListView from "./views/ListView.vue";
 	import TableView from "./views/TableView.vue";
 	import GridView from "./views/GridView.vue";
 
 	export default {
 		name: "ListBrowser",
-		components: { ListView, TableView, GridView },
+		components: { Actions, Filters, ListView, TableView, GridView },
 		props: {
 			data: {
 				type: Array
@@ -75,17 +49,17 @@
 				return viewType;
 			},
 			filteredList(){
-				if(this.searchValue===''){
+				if(this.search===''){
 					return this.data;
 				} else {
 					if(this.searchField===''){
 						return this.data.filter(item => {
 							let show = false
 							Object.values(item).forEach(value => {
-								if(value && typeof value === 'string' && value.toLowerCase().includes(this.searchValue.toLowerCase())){
+								if(value && typeof value === 'string' && value.toLowerCase().includes(this.search.toLowerCase())){
 									show = true;
 								}
-								if(value && typeof value === 'number' && value===+this.searchValue){
+								if(value && typeof value === 'number' && value===+this.search){
 									show = true;
 								}
 							})
@@ -94,28 +68,31 @@
 					} else {
 						return this.data.filter(item => {
 							if(item[this.searchField]) {
-								return item[this.searchField].toLowerCase().includes(this.searchValue.toLowerCase());
+								return item[this.searchField].toLowerCase().includes(this.search.toLowerCase());
 							}
 						})
 					}
-				
+
 				}
 			}
 		},
 		methods: {
 			changeView(mode){
 				this.viewMode = mode;
-			},
-			search(){
 			}
 		},
-		data(){
+		data() {
 			return {
-				viewMode: 'list',
-				searchValue: '',
-				searchField: '',
-				toggleKeys: false,
+				search: '',
+				viewMode: 'table',
+				searchField: ''
 			}
 		}
 	}
 </script>
+<style scoped>
+	.button { margin-right:10px; }
+	.vubular-list-browser { margin-top:40px; }
+	.box { overflow: hidden; }
+	.listing-items { max-height: 500px; overflow-y: auto; }
+</style>

@@ -29,7 +29,8 @@
 		}
 	}
 </script>
-<style>
+<style scoped>
+	.columns { margin: 20px; }
 	.item{
 		padding-bottom:10px;
 	}

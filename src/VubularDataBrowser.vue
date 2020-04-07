@@ -1,9 +1,11 @@
 <template>
-	<div>
+	<div class="vubular-data-browser">
+		<hero v-if="!hero.hide" :icon="hero.icon" :title="hero.title" :subtitle="hero.subtitle"></hero>
 		<component v-bind:is="dataBrowser" :data="data" :columnNames="columnNames" :showRowNumber="showRowNumber" :showFieldToggle="showFieldToggle" :fields="selectedFields"></component>
 	</div>
 </template>
 <script>
+	import { Hero } from "@vubular/elements";
 	import ListBrowser from "./list/ListBrowser.vue";
 	import ItemBrowser from "./item/ItemBrowser.vue";
 
@@ -11,6 +13,17 @@
 		name: "VubularDataBrowser",
 		components: { ListBrowser, ItemBrowser },
 		props: {
+			hero: {
+				type: Object,
+				default() {
+					return {
+						icon: "fal fa-list",
+						title: "Browse Data",
+						subtitle: "Analyze sort and observe in multiple views",
+						hide: false
+					}
+				}
+			},
 			data: {
 				type: [Array, Object],
 				required: true,
@@ -47,7 +60,7 @@
 		},
 		computed: {
 			dataBrowser() {
-				return Array.isArray(this.data) ? "list-browser" : "item-browser";
+				return Array.isArray(this.data) && this.data.length>1 ? "list-browser" : "item-browser";
 			}
 		},
 		mounted() {
