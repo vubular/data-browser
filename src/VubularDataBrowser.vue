@@ -1,7 +1,12 @@
 <template>
 	<div class="vubular-data-browser">
 		<hero v-if="!hero.hide" :icon="hero.icon" :title="hero.title" :subtitle="hero.subtitle"></hero>
-		<component v-bind:is="dataBrowser" :data="data" :columnNames="columnNames" :showRowNumber="showRowNumber" :showFieldToggle="showFieldToggle" :fields="selectedFields"></component>
+		<component v-bind:is="dataBrowser"
+			:data="data"
+			:fields="fields"
+			:view="view"
+			@goCreate="goCreate"
+			@goArchive="goArchive"></component>
 	</div>
 </template>
 <script>
@@ -38,40 +43,26 @@
 					]
 				}
 			},
-			columnNames: {
-				type: Object
-			},
-			showRowNumber: {
-				type: Boolean,
-				default(){
-					return false
-				}
-			},
-			showFieldToggle: {
-				type: Boolean,
-				default() {
-					return false
-				}
-			},
 			fields: {
 				type: String,
-				default: ""
+				default: "+,id,name,created_at,updated_at"
+			},
+			view: {
+				type: String,
+				default: "table"
 			}
 		},
 		computed: {
 			dataBrowser() {
-				return Array.isArray(this.data) && this.data.length>1 ? "list-browser" : "item-browser";
+				return Array.isArray(this.data) ? "list-browser" : "item-browser";
 			}
 		},
-		mounted() {
-			if(this.fields!==""){
-				this.selectedFields = this.fields.split(',');
-				console.log(1, this.selectedFields);
-			}
-		},
-		data(){
-			return {
-				selectedFields: []
+		methods: {
+			goCreate() {
+				this.$emit("goCreate");
+			},
+			goArchive() {
+				this.$emit("goArchive");
 			}
 		}
 	}
