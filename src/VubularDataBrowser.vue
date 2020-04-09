@@ -2,9 +2,10 @@
 	<div class="vubular-data-browser">
 		<hero v-if="!hero.hide" :icon="hero.icon" :title="hero.title" :subtitle="hero.subtitle"></hero>
 		<component v-bind:is="dataBrowser"
+			:actions="actions"
+			:view="view"
 			:data="data"
 			:fields="fields"
-			:view="view"
 			@goCreate="goCreate"
 			@goArchive="goArchive"></component>
 	</div>
@@ -29,6 +30,14 @@
 					}
 				}
 			},
+			actions: {
+				type: String,
+				default: "create::,search,archive::"
+			},
+			view: {
+				type: String,
+				default: "table"
+			},
 			data: {
 				type: [Array, Object],
 				required: true,
@@ -46,10 +55,6 @@
 			fields: {
 				type: String,
 				default: "+,id,name,created_at,updated_at"
-			},
-			view: {
-				type: String,
-				default: "table"
 			}
 		},
 		computed: {
