@@ -1,17 +1,21 @@
 <template>
 	<ul>
-		<li v-for="(value, key) in data" :key="key" v-show="anySelected">
+		<li v-for="(item, i) in data" :key="i">
 			<div class="section" style="padding:12px">
 				<div class="columns">
 					<div class="column is-narrow has-text-really-centered">
-						<span style="padding:15px">{{key+1}}</span>
+						<span style="padding:15px">{{i+1}}</span>
 					</div>
 					<div class="column">
-						<span v-for="(propValue, propName) in value" :key="propName" v-show="columnNames[propName]" v-if="fields.length===0 || fields.includes(propName)">
+						<span v-if="fields.includes(propName)" v-for="(propValue, propName) in item" :key="propName">
 							<span><span class="has-text-weight-bold">{{propName}}:</span> {{propValue}}</span><br/>
 						</span>
 					</div>
-					<div class="column is-narrow has-text-really-centered">Delete</div>
+					<div class="column is-narrow has-text-really-centered">
+						<slot name="actions" v-bind:item="item">
+							Delete
+						</slot>
+					</div>
 				</div>
 			</div>
 		</li>
@@ -21,20 +25,8 @@
 	export default {
 		name: "ListView",
 		props: {
-			data: {
-				type: Array
-			},
-			columnNames: {
-				type: Object
-			},
-			fields: {
-				type: Array
-			}
-		},
-		computed: {
-			anySelected(){
-				return Object.values(this.columnNames).includes(true);
-			}
+			data: { type: Array },
+			fields: { type: String }
 		}
 	}
 </script>
