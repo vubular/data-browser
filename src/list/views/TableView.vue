@@ -3,15 +3,21 @@
 		<table class="table is-fullwidth is-striped is-hoverable">
 			<thead>
 				<tr>
-					<th v-if="showRowNumber">#</th>
-					<th v-show="columnNames[propName]" v-for="(value, propName) in data[0]" :key="propName" class="is-capitalized" v-if="fields.length===0 || fields.includes(propName)">{{propName}}</th>
+					<th v-if="fields.includes('+')" class="has-text-grey-light has-text-weight-light is-narrow">+</th>
+					<th v-if="fields.includes(propName)" v-for="(value, propName) in data[0]" :key="propName" class="is-capitalized">{{propName}}</th>
+					<th>Actions</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="(value,key)  in data" :key="key" v-show="anySelected">
-					<td v-if="showRowNumber">{{key+1}}</td>
-					<td v-show="columnNames[propName]"  v-for="(propValue, propName) in value" :key="propName" v-if="fields.length===0 || fields.includes(propName)">
+				<tr v-for="(item, i) in data" :key="i">
+					<th v-if="fields.includes('+')" class="has-text-grey-light has-text-weight-light">{{i+1}}</th>
+					<td v-if="fields.includes(propName)" v-for="(propValue, propName) in item" :key="propName">
 						{{propValue}}
+					</td>
+					<td class="is-narrow">
+						<slot name="actions" v-bind:item="item">
+							<button class="button is-danger is-outlined"><i class="fa fa-trash"></i></button>
+						</slot>
 					</td>
 				</tr>
 			</tbody>
@@ -22,18 +28,8 @@
 	export default {
 		name: "TableView",
 		props: {
-			data: {
-				type: Array
-			},
-			columnNames: {
-				type: Object
-			},
-			showRowNumber: {
-				type: Boolean
-			},
-			fields: {
-				type: Array
-			}
+			data: { type: Array },
+			fields: { type: String }
 		},
 		method: {
 			archiveItem(item) {
