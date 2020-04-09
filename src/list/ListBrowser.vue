@@ -1,13 +1,11 @@
 <template>
 	<div class="list-browser" style="margin-top:30px">
 		<div class="box is-paddingless">
-			<actions :search="search"></actions>
+			<actions @search="searching" v-on="$listeners"></actions>
 			<!-- <filters></filters> -->
 			<div class="listing-items">
-				<component v-bind:is="viewType"
+				<component v-bind:is="viewMode"
 					:data="filteredList"
-					:columnNames="columnNames"
-					:showRowNumber="showRowNumber"
 					:fields="fields"></component>
 			</div>
 		</div>
@@ -25,28 +23,16 @@
 		name: "ListBrowser",
 		components: { Actions, Filters, ListView, TableView, GridView },
 		props: {
-			data: {
-				type: Array
-			},
-			columnNames: {
-				type: Object
-			},
-			showRowNumber: {
-				type: Boolean
-			},
-			showFieldToggle: {
-				type: Boolean
-			},
-			fields: {
-				type: Array
-			}
+			data: { type: Array },
+			fields: { type: String },
+			view: { type: String }
 		},
 		computed: {
-			viewType() {
-				var viewType = "table-view";
-				if(this.viewMode == 'list') viewType = "list-view";
-				if(this.viewMode == 'grid') viewType = "grid-view";
-				return viewType;
+			viewMode() {
+				var view = "table-view";
+				if(this.view == 'list') view = "list-view";
+				if(this.view == 'grid') view = "grid-view";
+				return view;
 			},
 			filteredList(){
 				if(this.search===''){
@@ -77,14 +63,14 @@
 			}
 		},
 		methods: {
-			changeView(mode){
-				this.viewMode = mode;
+			searching(val) {
+				console.log(val);
+				this.search = val;
 			}
 		},
 		data() {
 			return {
 				search: '',
-				viewMode: 'table',
 				searchField: ''
 			}
 		}
