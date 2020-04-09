@@ -9,7 +9,8 @@
 					</button>
 				</div>
 				<div class="column">
-					<input class="input is-medium" placeholder="Search..." />
+					<!-- <input class="input "  /> -->
+					<b-input @input="val => $emit('search', val)" placeholder="Search..." size="is-medium"></b-input>
 				</div>
 				<div class="column is-narrow">
 					<button type="button" class="button is-danger is-outlined is-medium">
