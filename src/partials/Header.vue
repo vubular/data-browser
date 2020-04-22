@@ -1,5 +1,5 @@
 <template>
-	<div class="controls" :class="{'compact': compact}">
+	<div v-if="!controls.includes('hide')" class="controls" :class="{'compact': compact}">
 		<div class="container is-fluid">
 			<div class="columns">
 				<div v-if="controls.includes('create')" class="column is-narrow">
@@ -23,7 +23,7 @@
 						</template>
 					</slot>
 				</div>
-				<div v-if="controls.includes('search')" class="column">
+				<div class="column">
 					<b-input @input="val => $emit('search', val)" placeholder="Search..." size="is-medium"></b-input>
 				</div>
 				<div v-if="controls.includes('archive')" class="column is-narrow">
@@ -75,7 +75,6 @@
 						}
 					}
 				}
-
 				return false;
 			},
 			archiveRouter() {
@@ -100,11 +99,9 @@
 						}
 					}
 				}
-
 				return false;
 			}
-		},
-
+		}
 	}
 </script>
 <style scoped>

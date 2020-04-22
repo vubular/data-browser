@@ -10,29 +10,31 @@
 					:compact="view.includes('compact')"
 					@search="search"
 					v-on="$listeners"></data-browser-header>
-
 				<table v-if="view.includes('table')" class="table is-fullwidth is-striped is-hoverable">
 					<slot name="thead">
 						<default-table-head :fields="fields"
-							:item="item"
+							:data="data"
 							v-on="$listeners"></default-table-head>
 					</slot>
 					<tbody>
-						<slot v-for="(item, i) in filteredItems" name="item">
-							<default-table-row :fields="fields"
+						<slot v-for="(item, i) in items" name="item">
+							<default-table-item :fields="fields"
 								:item="item"
-								:counter="i+1"
-								v-on="$listeners"></default-table-row>
+								:counter="i+1+counterBump"
+								v-on="$listeners"></default-table-item>
 						</slot>
 					</tbody>
 					<slot name="tfoot">
-						<default-table-foot :fields="fields"
-							:item="item"
+						<default-table-foot :controls="controls"
+							:fields="fields"
+							:data="data"
+							:total="total"
+							@active="updatePage"
 							v-on="$listeners"></default-table-foot>
 					</slot>
 				</table>
 				<ul v-if="view.includes('list')">
-					<slot v-for="(item, i) in filteredItems" name="item">
+					<slot v-for="(item, i) in items" name="item">
 						<default-list-item :fields="fields"
 							:item="item"
 							v-on="$listeners"></default-list-item>
@@ -43,7 +45,6 @@
 						:item="item"
 						v-on="$listeners"></default-grid-item>
 				</div>
-
 				<b-loading :is-full-page="false" :active.sync="isLoading"></b-loading>
 			</div>
 		</div>
@@ -56,18 +57,18 @@
 	import DataBrowserFilters from "./partials/Filters.vue";
 
 	import DefaultTableHead from "./default/TableHead.vue";
-	import DefaultTableRow from "./default/TableRow.vue";
 	import DefaultTableFoot from "./default/TableFoot.vue";
 
+	import DefaultTableItem from "./default/TableItem.vue";
 	import DefaultListItem from "./default/ListItem.vue";
-
 	import DefaultGridItem from "./default/GridItem.vue";
 
 	export default {
 		name: "VubularDataBrowser",
 		components: {
 			DataBrowserHeader, DataBrowserFilters,
-			DefaultTableHead, DefaultTableRow, DefaultTableFoot,
+			DefaultTableHead, DefaultTableFoot,
+			DefaultTableItem,
 			DefaultListItem,
 			DefaultGridItem
 		},
@@ -85,7 +86,7 @@
 			},
 			controls: {
 				type: String,
-				default: "create::,search,archive::"
+				default: "create::,search,archive::,pagination::"
 			},
 			view: {
 				type: String,
@@ -105,11 +106,15 @@
 			isLoading: {
 				type: Boolean,
 				default: false
+			},
+			total: {
+				type: Number
 			}
 		},
 		data() {
 			return {
-				filteredItems: []
+				filteredItems: [],
+				page: 1
 			}
 		},
 		computed: {
@@ -121,6 +126,14 @@
 			},
 			item() {
 				return this.filteredItems[0] ?? null;
+			},
+			items() {
+				var start = (this.page-1) * 24;
+				var end = start + 24;
+				return this.filteredItems.slice(start, end);
+			},
+			counterBump() {
+				return (this.page-1) * 24;
 			}
 		},
 		methods: {
@@ -143,6 +156,10 @@
 						});
 					}
 				}, 250);
+			},
+			updatePage(activePage) {
+				this.page = activePage;
+				console.log(activePage);
 			}
 		},
 		watch: {

@@ -12,7 +12,10 @@
 		name: "DefaultTableHead",
 		props: {
 			fields: { type: String },
-			item: { type: Object }
+			data: { type: [Array, Object] }
+		},
+		computed: {
+			item() { return this.data[0] ?? null }
 		}
 	}
 </script>

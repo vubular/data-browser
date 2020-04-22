@@ -20,7 +20,7 @@
 </template>
 <script>
 	export default {
-		name: "DefaultTableRow",
+		name: "DefaultTableItem",
 		props: {
 			fields: { type: String },
 			item: { type: Object },

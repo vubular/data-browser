@@ -1,18 +1,41 @@
 <template>
 	<tfoot>
 		<tr>
-			<td v-if="fields.includes('+')"></td>
-			<td v-if="fields.includes(propName)" v-for="(value, propName) in item" :key="propName" class="is-capitalized">{{propName}}</td>
-			<td>Actions</td>
+			<td colspan="999999" style="padding:20px">
+				<pagination v-if="paginate" :total="theTotal" v-on="$listeners"></pagination>
+			</td>
 		</tr>
 	</tfoot>
 </template>
 <script>
+	import { Pagination } from "@vubular/elements";
 	export default {
 		name: "DefaultTableFoot",
+		components: { Pagination },
 		props: {
+			controls: { type: String },
 			fields: { type: String },
-			item: { type: Object }
+			data: { type: [Array, Object] },
+			total: { type: Number }
+		},
+		computed: {
+			item() { return this.data[0] ?? null },
+			paginate() { return this.controls.includes("pagination") },
+			itemsPerPage() {
+				var itemsPerPage = 24;
+				if(!this.controls.includes("pagination::")) {
+					itemsPerPage = this.controls.split("pagination:");
+					itemsPerPage = itemsPerPage.pop();
+					itemsPerPage = itemsPerPage.split(",");
+					itemsPerPage = itemsPerPage.shift();
+				}
+
+				return +itemsPerPage;
+			},
+			theTotal() {
+				if(this.total) return this.total;
+				return Math.ceil(this.data.length/this.itemsPerPage);
+			},
 		}
 	}
 </script>
