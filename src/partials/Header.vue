@@ -30,16 +30,16 @@
 					<slot name="create-button">
 						<button v-if="!createRouter"
 							type="button"
-							class="button is-danger is-outlined is-medium"
+							class="button is-danger is-medium"
 							@click="$emit('archive')">
-							<i class="fal fa-archive"></i>
+							<i class="fa fa-archive"></i>
 						</button>
 						<template v-else>
-							<router-link v-if="$route" :to="archiveRouter" class="button is-danger is-outlined is-medium">
-								<i class="fal fa-archive"></i>
+							<router-link v-if="$route" :to="archiveRouter" class="button is-danger is-medium">
+								<i class="fa fa-archive"></i>
 							</router-link>
-							<a v-else :href="archiveRouter" class="button is-danger is-outlined is-medium">
-								<i class="fal fa-archive"></i>
+							<a v-else :href="archiveRouter" class="button is-danger is-medium">
+								<i class="fa fa-archive"></i>
 							</a>
 						</template>
 					</slot>

@@ -20,6 +20,7 @@
 						<slot v-for="(item, i) in items" name="item">
 							<default-table-item :fields="fields"
 								:item="item"
+								:key="i"
 								:counter="i+1+counterBump"
 								v-on="$listeners"></default-table-item>
 						</slot>
@@ -105,7 +106,7 @@
 			},
 			isLoading: {
 				type: Boolean,
-				default: false
+				default: true
 			},
 			total: {
 				type: Number
@@ -137,6 +138,9 @@
 			}
 		},
 		methods: {
+			archive(item) {
+				this.$emit("archive", item);
+			},
 			search(value) {
 				clearTimeout(filterItems);
 				var filterItems = setTimeout(() => {
@@ -170,7 +174,7 @@
 	}
 </script>
 <style>
-	.list-browser { margin-top:30px; }
-	.listing-items { position: relative; min-height: 300px; }
-	.listing-items.compact { max-height: 500px; overflow-y: auto; }
+	.list-browser { margin-top:30px; min-height: 300px; }
+	.list-browser.compact { max-height: 500px; overflow-y: auto; }
+	.list-browser .box { position: relative; }
 </style>
