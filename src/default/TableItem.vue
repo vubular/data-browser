@@ -8,10 +8,7 @@
 			<template v-else>{{propValue}}</template>
 		</td>
 		<td class="is-narrow">
-			<router-link :to="$route.fullPath+'/'+item.id+'/edit'" class="button is-info is-small" style="margin-right:10px">
-				<span class="icon"><i class="fa fa-edit"></i></span>
-				<span>Edit</span>
-			</router-link>
+			<edit :id="item.id"></edit>
 			<archive :dialog="true"
 				class="is-small"
 				@click="highlight"
@@ -21,11 +18,11 @@
 	</tr>
 </template>
 <script>
-	import { Archive } from "@vubular/elements";
+	import { Edit, Archive } from "@vubular/elements";
 
 	export default {
 		name: "DefaultTableItem",
-		components: { Archive },
+		components: { Edit, Archive },
 		props: {
 			fields: { type: String },
 			item: { type: Object },

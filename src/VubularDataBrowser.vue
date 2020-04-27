@@ -17,7 +17,8 @@
 							v-on="$listeners"></default-table-head>
 					</slot>
 					<tbody>
-						<slot v-for="(item, i) in items" name="item">
+
+						<slot v-for="(item, i) in items" name="item" :item="{index: i, counter: i+1+counterBump, fields:item}">
 							<default-table-item :fields="fields"
 								:item="item"
 								:key="i"
@@ -28,7 +29,7 @@
 					<slot name="tfoot">
 						<default-table-foot :controls="controls"
 							:fields="fields"
-							:data="data"
+							:data="filteredItems"
 							:total="total"
 							@active="updatePage"
 							v-on="$listeners"></default-table-foot>
@@ -128,10 +129,14 @@
 			item() {
 				return this.filteredItems[0] ?? null;
 			},
-			items() {
-				var start = (this.page-1) * 24;
-				var end = start + 24;
-				return this.filteredItems.slice(start, end);
+			items: {
+				cache: false,
+				get() {
+					var start = (this.page-1) * 24;
+					var end = start + 24;
+					return this.filteredItems.slice(start, end);
+				}
+
 			},
 			counterBump() {
 				return (this.page-1) * 24;
@@ -163,7 +168,6 @@
 			},
 			updatePage(activePage) {
 				this.page = activePage;
-				console.log(activePage);
 			}
 		},
 		watch: {

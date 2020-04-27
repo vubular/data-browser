@@ -67,7 +67,7 @@
 							if(controls[c].includes("create")) {
 								var createControl = controls[c].split(":");
 								if(this.$route) {
-									return this.$route.fullPath + "/" + createControl.pop();
+									return createControl.pop();
 								} else {
 									return "#/" + createControl.pop();
 								}
@@ -91,7 +91,7 @@
 							if(controls[c].includes("archive")) {
 								var archiveControl = controls[c].split(":");
 								if(this.$route) {
-									return this.$route.fullPath + "/" + archiveControl.pop();
+									return archiveControl.pop();
 								} else {
 									return "#/" + archiveControl.pop();
 								}

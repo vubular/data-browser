@@ -2,7 +2,7 @@
 	<tfoot>
 		<tr>
 			<td colspan="999999" style="padding:20px">
-				<pagination v-if="paginate" :total="theTotal" v-on="$listeners"></pagination>
+				<pagination v-if="paginate" :key="theTotal" :total="theTotal" v-on="$listeners"></pagination>
 			</td>
 		</tr>
 	</tfoot>
@@ -32,9 +32,12 @@
 
 				return +itemsPerPage;
 			},
-			theTotal() {
-				if(this.total) return this.total;
-				return Math.ceil(this.data.length/this.itemsPerPage);
+			theTotal: {
+				cache: false,
+				get() {
+					if(this.total) return this.total;
+					return Math.ceil(this.data.length/this.itemsPerPage);
+				}
 			},
 		}
 	}
