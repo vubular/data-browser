@@ -1,5 +1,5 @@
 <template>
-	<tfoot>
+	<tfoot v-if="renderFooter">
 		<tr>
 			<td colspan="999999" style="padding:20px">
 				<pagination v-if="paginate" :key="theTotal" :total="theTotal" v-on="$listeners"></pagination>
@@ -20,7 +20,7 @@
 		},
 		computed: {
 			item() { return this.data[0] ?? null },
-			paginate() { return this.controls.includes("pagination") },
+			paginate() { return this.controls.includes("pagination") && this.theTotal>1 },
 			itemsPerPage() {
 				var itemsPerPage = 24;
 				if(!this.controls.includes("pagination::")) {
@@ -39,6 +39,9 @@
 					return Math.ceil(this.data.length/this.itemsPerPage);
 				}
 			},
+			renderFooter() {
+				return this.paginate
+			}
 		}
 	}
 </script>
