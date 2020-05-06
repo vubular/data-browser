@@ -4,13 +4,14 @@
 			:icon="hero.icon"
 			:title="hero.title"
 			:subtitle="hero.subtitle"></hero>
-		<div class="list-browser" :class="{'compact': view.includes('compact')}">
-			<div class="box is-paddingless is-clipped">
+		<div class="list-browser" :class="{'compact': view.includes('compact'), 'docked': view.includes('dock')}">
+			<div class="is-paddingless" :class="{'box': !view.includes('dock')}">
 				<data-browser-header :controls="controls"
 					:compact="view.includes('compact')"
 					@search="search"
+					:label="label"
 					v-on="$listeners"></data-browser-header>
-				<div class="list-wrap">
+				<div class="list-wrap" :class="{'busy': isLoading}">
 					<table v-if="viewMode=='table'"
 						class="table is-fullwidth is-striped is-hoverable"
 						:class="{'is-narrow': view.includes('compact')}">
@@ -32,25 +33,38 @@
 							</slot>
 						</tbody>
 						<slot name="tfoot">
-							<default-table-foot :controls="controls"
+							<default-table-foot v-if="controls.includes('pagination')"
+								:controls="controls"
 								:fields="fields"
 								:data="filteredItems"
 								:total="total"
-								@active="updatePage"
-								v-on="$listeners"></default-table-foot>
+								v-on="$listeners">
+								<data-browser-pagination :controls="controls"
+									:data="data"
+									@active="updatePage"
+									v-on="$listeners"></data-browser-pagination>
+							</default-table-foot>
 						</slot>
 					</table>
 					<ul v-if="viewMode=='list'">
-						<slot v-for="(item, i) in items" name="item">
+						<slot v-for="(item, i) in items" name="item" :item="{index: i, counter: i+1+counterBump, fields:item}">
 							<default-list-item :fields="fields"
 								:item="item"
 								v-on="$listeners"></default-list-item>
 						</slot>
 					</ul>
-					<div v-if="viewMode=='grid'" class="columns is-multiline">
-						<default-grid-item :fields="fields"
-							:item="item"
-							v-on="$listeners"></default-grid-item>
+					<div v-if="viewMode=='grid'" class="columns is-multiline" style="margin-top:20px">
+						<slot v-for="(item, i) in items" name="item" :item="{index: i, counter: i+1+counterBump, fields:item}">
+							<default-grid-item :fields="fields"
+								:item="item"
+								v-on="$listeners"></default-grid-item>
+						</slot>
+						<div v-if="controls.includes('pagination')" class="column is-12">
+							<data-browser-pagination :controls="controls"
+								:data="data"
+								@active="updatePage"
+								v-on="$listeners"></data-browser-pagination>
+						</div>
 					</div>
 					<b-loading :is-full-page="false" :active.sync="isLoading"></b-loading>
 				</div>
@@ -63,6 +77,7 @@
 
 	import DataBrowserHeader from "./partials/Header.vue";
 	import DataBrowserFilters from "./partials/Filters.vue";
+	import DataBrowserPagination from "./partials/Pagination.vue";
 
 	import DefaultTableHead from "./default/TableHead.vue";
 	import DefaultTableFoot from "./default/TableFoot.vue";
@@ -75,7 +90,7 @@
 		name: "VubularDataBrowser",
 		components: {
 			Hero, NotYet,
-			DataBrowserHeader, DataBrowserFilters,
+			DataBrowserHeader, DataBrowserFilters, DataBrowserPagination,
 			DefaultTableHead, DefaultTableFoot,
 			DefaultTableItem,
 			DefaultListItem,
@@ -118,6 +133,10 @@
 			},
 			total: {
 				type: Number
+			},
+			label: {
+				type: String,
+				default: "Item"
 			}
 		},
 		data() {
@@ -203,7 +222,8 @@
 </script>
 <style>
 	.list-browser { margin-top:30px; }
-	.list-wrap { position: relative; min-height: 300px; }
+	.list-wrap.busy { position: relative; min-height: 300px; }
+	.list-browser .box { overflow: hidden; }
 	.list-browser.compact > .box { box-shadow:none; border: 1px solid #dbdbdb; }
 	.list-browser.compact .list-wrap { max-height: 500px; overflow-y: auto; overflow-x: hidden; }
 </style>
