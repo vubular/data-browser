@@ -33,16 +33,8 @@
 							</slot>
 						</tbody>
 						<slot name="tfoot">
-							<default-table-foot v-if="controls.includes('pagination')"
-								:controls="controls"
-								:fields="fields"
-								:data="filteredItems"
-								:total="total"
-								v-on="$listeners">
-								<data-browser-pagination :controls="controls"
-									:data="data"
-									@active="updatePage"
-									v-on="$listeners"></data-browser-pagination>
+							<default-table-foot v-if="paginate">
+								<pagination :key="theTotal" :total="theTotal" @active="updatePage"></pagination>
 							</default-table-foot>
 						</slot>
 					</table>
@@ -59,11 +51,8 @@
 								:item="item"
 								v-on="$listeners"></default-grid-item>
 						</slot>
-						<div v-if="controls.includes('pagination')" class="column is-12">
-							<data-browser-pagination :controls="controls"
-								:data="data"
-								@active="updatePage"
-								v-on="$listeners"></data-browser-pagination>
+						<div v-if="paginate" class="column is-12">
+							<pagination :key="theTotal" :total="theTotal" @active="updatePage"></pagination>
 						</div>
 					</div>
 					<b-loading :is-full-page="false" :active.sync="isLoading"></b-loading>
@@ -73,11 +62,10 @@
 	</div>
 </template>
 <script>
-	import { Hero, NotYet } from "@vubular/elements";
+	import { Hero, NotYet, Pagination } from "@vubular/elements";
 
 	import DataBrowserHeader from "./partials/Header.vue";
 	import DataBrowserFilters from "./partials/Filters.vue";
-	import DataBrowserPagination from "./partials/Pagination.vue";
 
 	import DefaultTableHead from "./default/TableHead.vue";
 	import DefaultTableFoot from "./default/TableFoot.vue";
@@ -89,8 +77,8 @@
 	export default {
 		name: "VubularDataBrowser",
 		components: {
-			Hero, NotYet,
-			DataBrowserHeader, DataBrowserFilters, DataBrowserPagination,
+			Hero, NotYet, Pagination,
+			DataBrowserHeader, DataBrowserFilters,
 			DefaultTableHead, DefaultTableFoot,
 			DefaultTableItem,
 			DefaultListItem,
@@ -146,6 +134,7 @@
 			}
 		},
 		computed: {
+			paginate() { return this.controls.includes('pagination') && this.theTotal>1 },
 			viewMode() {
 				var view = "table";
 				if(this.view.includes("list")) view = "list";
@@ -155,17 +144,37 @@
 			item() {
 				return this.filteredItems[0] ?? null;
 			},
+			itemsPerPage() {
+				if(!this.controls.includes("pagination")) return this.filteredItems.length;
+
+				var itemsPerPage = 24;
+				if(!this.controls.includes("pagination::")) {
+					itemsPerPage = this.controls.split("pagination:");
+					itemsPerPage = itemsPerPage.pop();
+					if(itemsPerPage.includes(",")) {
+						itemsPerPage = itemsPerPage.split(",");
+						itemsPerPage = itemsPerPage.shift();
+					}
+				}
+				return +itemsPerPage;
+			},
 			items: {
 				cache: false,
 				get() {
-					var start = (this.page-1) * 24;
-					var end = start + 24;
+					var start = (this.page-1) * this.itemsPerPage;
+					var end = start + this.itemsPerPage;
 					return this.filteredItems.slice(start, end);
 				}
-
 			},
 			counterBump() {
-				return (this.page-1) * 24;
+				return (this.page-1) * this.itemsPerPage;
+			},
+			theTotal: {
+				cache: false,
+				get() {
+					if(this.total) return this.total;
+					return Math.ceil(this.filteredItems.length/this.itemsPerPage);
+				}
 			}
 		},
 		methods: {
@@ -211,6 +220,7 @@
 			},
 			updatePage(activePage) {
 				this.page = activePage;
+				this.$emit("page", this.page);
 			}
 		},
 		watch: {

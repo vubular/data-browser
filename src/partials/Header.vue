@@ -27,8 +27,8 @@
 					<b-input @input="val => $emit('search', val)" placeholder="Search..." size="is-medium"></b-input>
 				</div>
 				<div v-if="controls.includes('archive')" class="column is-narrow">
-					<slot name="create-button">
-						<button v-if="!createRouter"
+					<slot name="archive-button">
+						<button v-if="!archiveRouter"
 							type="button"
 							class="button is-danger is-medium"
 							@click="$emit('archive')">
