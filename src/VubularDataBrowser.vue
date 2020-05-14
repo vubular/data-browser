@@ -14,7 +14,7 @@
 				<div class="list-wrap" :class="{'busy': isLoading}">
 					<table v-if="viewMode=='table'"
 						class="table is-fullwidth is-striped is-hoverable"
-						:class="{'is-narrow': view.includes('compact')}">
+						:class="{'is-narrow': view.includes('compact'), 'is-bordered': view.includes('bordered')}">
 						<slot name="thead">
 							<default-table-head :fields="fields"
 								:data="data"
@@ -231,7 +231,6 @@
 	}
 </script>
 <style>
-	.list-browser { margin-top:30px; }
 	.list-wrap.busy { position: relative; min-height: 300px; }
 	.list-browser .box { overflow: hidden; }
 	.list-browser.compact > .box { box-shadow:none; border: 1px solid #dbdbdb; }

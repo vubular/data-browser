@@ -9,16 +9,16 @@
 							class="button create-button is-success is-medium"
 							@click="$emit('create')">
 							<span class="icon"><i class="fal fa-plus"></i></span>
-							<span>Create Item</span>
+							<span>{{createLabel}}</span>
 						</button>
 						<template v-else>
 							<router-link v-if="$route" :to="createRouter" class="button create-button is-success is-medium">
 								<span class="icon"><i class="fal fa-plus"></i></span>
-								<span>Create Item</span>
+								<span>{{createLabel}}</span>
 							</router-link>
 							<a v-else :href="createRouter" class="button create-button is-success is-medium">
 								<span class="icon"><i class="fal fa-plus"></i></span>
-								<span>Create Item</span>
+								<span>{{createLabel}}</span>
 							</a>
 						</template>
 					</slot>
@@ -51,16 +51,24 @@
 <script>
 	export default {
 		name: "DataBrowserHeader",
-		props: ['controls', 'compact'],
+		props: ['controls', 'compact', 'label'],
 		computed: {
+			createLabel() {
+				var createLabel = this.$i18n ? this.$t("Create") : "Create";
+				var itemLabel = this.$i18n ? this.$t(this.label) : this.label;
+				return createLabel + " " + itemLabel;
+			},
+			activeRoute() {
+				if(this.$route) {
+					return this.$route.fullPath;
+				} else {
+					return "#"; //get current url js trailed hash
+				}
+			},
 			createRouter() {
 				if(this.controls.includes("create:")) {
 					if(this.controls.includes("create::")) {
-						if(this.$route) {
-							return this.$route.fullPath + "/create";
-						} else {
-							return "#/create";
-						}
+						return this.activeRoute + "/create";
 					} else {
 						var controls = this.controls.split(",");
 						for(var c in controls) {
@@ -80,11 +88,7 @@
 			archiveRouter() {
 				if(this.controls.includes("archive:")) {
 					if(this.controls.includes("archive::")) {
-						if(this.$route) {
-							return this.$route.fullPath + "/archive";
-						} else {
-							return "#/archive";
-						}
+						return this.activeRoute + "/archive";
 					} else {
 						var controls = this.controls.split(",");
 						for(var c in controls) {
