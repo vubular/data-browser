@@ -1,5 +1,5 @@
 <template>
-	<div v-if="!controls.includes('hide')" class="controls" :class="{'compact': compact}">
+	<div v-if="!controls.includes('hide')" class="controls" :class="{'compact': compact, 'docked': docked}">
 		<div class="container is-fluid">
 			<div class="columns">
 				<div v-if="controls.includes('create')" class="column is-narrow">
@@ -51,7 +51,7 @@
 <script>
 	export default {
 		name: "DataBrowserHeader",
-		props: ['controls', 'compact', 'label'],
+		props: ['controls', 'compact', 'docked', 'label'],
 		computed: {
 			createLabel() {
 				var createLabel = this.$i18n ? this.$t("Create") : "Create";
@@ -111,5 +111,6 @@
 <style scoped>
 	.controls { padding: 30px 0; border-bottom: 1px solid #e2e2e2; }
 	.controls.compact { position: relative; z-index: 1; box-shadow: 0 1px 5px rgba(0,0,0,0.1); }
+	.controls.docked .container.is-fluid { margin:0; }
 	.button.create-button { width: 100%; min-width: 250px; }
 </style>

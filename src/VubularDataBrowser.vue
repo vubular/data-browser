@@ -8,10 +8,11 @@
 			<div class="is-paddingless" :class="{'box': !view.includes('dock')}">
 				<data-browser-header :controls="controls"
 					:compact="view.includes('compact')"
+					:docked="view.includes('dock')"
 					@search="search"
 					:label="label"
 					v-on="$listeners"></data-browser-header>
-				<div class="list-wrap" :class="{'busy': isLoading}">
+				<div class="list-wrap" :class="{'busy': loadingStatus}">
 					<table v-if="viewMode=='table'"
 						class="table is-fullwidth is-striped is-hoverable"
 						:class="{'is-narrow': view.includes('compact'), 'is-bordered': view.includes('bordered')}">
@@ -21,7 +22,7 @@
 								v-on="$listeners"></default-table-head>
 						</slot>
 						<tbody>
-							<slot v-for="(item, i) in items" name="item" :item="{index: i, counter: i+1+counterBump, fields:item}">
+							<slot name="item" v-for="(item, i) in items" :item="{index: i, counter: i+1+counterBump, fields:item}">
 								<default-table-item :fields="fields"
 									:item="item"
 									:key="i"
@@ -39,14 +40,14 @@
 						</slot>
 					</table>
 					<ul v-if="viewMode=='list'">
-						<slot v-for="(item, i) in items" name="item" :item="{index: i, counter: i+1+counterBump, fields:item}">
+						<slot name="item" v-for="(item, i) in items" :item="{index: i, counter: i+1+counterBump, fields:item}">
 							<default-list-item :fields="fields"
 								:item="item"
 								v-on="$listeners"></default-list-item>
 						</slot>
 					</ul>
 					<div v-if="viewMode=='grid'" class="columns is-multiline" style="margin-top:20px">
-						<slot v-for="(item, i) in items" name="item" :item="{index: i, counter: i+1+counterBump, fields:item}">
+						<slot name="item" v-for="(item, i) in items" :item="{index: i, counter: i+1+counterBump, fields:item}">
 							<default-grid-item :fields="fields"
 								:item="item"
 								v-on="$listeners"></default-grid-item>
@@ -55,7 +56,7 @@
 							<pagination :key="theTotal" :total="theTotal" @active="updatePage"></pagination>
 						</div>
 					</div>
-					<b-loading :is-full-page="false" :active.sync="isLoading"></b-loading>
+					<b-loading :is-full-page="false" :active.sync="loadingStatus"></b-loading>
 				</div>
 			</div>
 		</div>
@@ -129,11 +130,13 @@
 		},
 		data() {
 			return {
+				loading: false,
 				filteredItems: [],
 				page: 1
 			}
 		},
 		computed: {
+			loadingStatus() { return this.isLoading || this.loading },
 			paginate() { return this.controls.includes('pagination') && this.theTotal>1 },
 			viewMode() {
 				var view = "table";
@@ -163,6 +166,7 @@
 				get() {
 					var start = (this.page-1) * this.itemsPerPage;
 					var end = start + this.itemsPerPage;
+					if(this.page>1 && this.itemsPerPage>=this.data.length) return this.filteredItems;
 					return this.filteredItems.slice(start, end);
 				}
 			},
@@ -182,13 +186,15 @@
 				this.$emit("archive", item);
 			},
 			search(value) {
-				clearTimeout(filterItems);
-				var filterItems = setTimeout(() => {
-					if(value===''){
-						this.filteredItems = this.data;
-					} else {
+				this.loading = true;
+				if(!value || value=='') {
+					this.filteredItems = this.data;
+					this.loading = false;
+				} else {
+					clearTimeout(filterItems);
+					var filterItems = setTimeout(() => {
 						this.filteredItems = [];
-						this.data.filter(item => {
+						this.data.filter((item, i) => {
 							var matchItems = Object.values(item);
 							for(var m=0;m<matchItems.length;m++) {
 								if(!matchItems[m]) continue;
@@ -214,24 +220,26 @@
 									}
 								}
 							}
+							if(i==this.data.length-1) this.loading = false;
 						});
-					}
-				}, 250);
+					}, 250);
+				}
 			},
 			updatePage(activePage) {
 				this.page = activePage;
 				this.$emit("page", this.page);
 			}
 		},
+		mounted() { this.search(''); },
 		watch: {
 			data(newData, oldData) {
-				if(newData && newData!=oldData) { this.filteredItems = newData; }
+				if(newData && newData!=oldData) { this.search(''); }
 			}
 		}
 	}
 </script>
 <style>
-	.list-wrap.busy { position: relative; min-height: 300px; }
+	.list-browser .list-wrap.busy { position: relative; }
 	.list-browser .box { overflow: hidden; }
 	.list-browser.compact > .box { box-shadow:none; border: 1px solid #dbdbdb; }
 	.list-browser.compact .list-wrap { max-height: 500px; overflow-y: auto; overflow-x: hidden; }
