@@ -12,7 +12,7 @@
 					@search="search"
 					:label="label"
 					v-on="$listeners"></data-browser-header>
-				<div class="list-wrap" :class="{'busy': loadingStatus}">
+				<div class="list-wrap" :class="{'loading-list': loadingStatus}">
 					<table v-if="viewMode=='table'"
 						class="table is-fullwidth is-striped is-hoverable"
 						:class="{'is-narrow': view.includes('compact'), 'is-bordered': view.includes('bordered')}">
@@ -35,7 +35,14 @@
 						</tbody>
 						<slot name="tfoot">
 							<default-table-foot v-if="paginate">
-								<pagination :key="theTotal" :total="theTotal" @active="updatePage"></pagination>
+								<div class="columns">
+									<div class="column">
+										<pagination :key="theTotal" :total="theTotal" @active="updatePage"></pagination>
+									</div>
+									<div class="column is-narrow has-text-really-centered">
+										Total: {{this.filteredItems.length}}
+									</div>
+								</div>
 							</default-table-foot>
 						</slot>
 					</table>
@@ -238,9 +245,9 @@
 		}
 	}
 </script>
-<style>
-	.list-browser .list-wrap.busy { position: relative; }
-	.list-browser .box { overflow: hidden; }
+<style scoped>
+	.list-browser .list-wrap.loading-list { position: relative; min-height: 500px; }
+	.list-browser .list-wrap table { border-bottom-right-radius: 6px; border-bottom-left-radius: 6px; }
 	.list-browser.compact > .box { box-shadow:none; border: 1px solid #dbdbdb; }
 	.list-browser.compact .list-wrap { max-height: 500px; overflow-y: auto; overflow-x: hidden; }
 </style>
