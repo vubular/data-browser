@@ -11,7 +11,10 @@
 					:docked="view.includes('dock')"
 					@search="search"
 					:label="label"
-					v-on="$listeners"></data-browser-header>
+					v-on="$listeners">
+					<template #create-button><slot name="create-button"></slot></template>
+					<template #archive-button><slot name="archive-button"></slot></template>
+				</data-browser-header>
 				<div class="list-wrap" :class="{'loading-list': loadingStatus}">
 					<table v-if="viewMode=='table'"
 						class="table is-fullwidth is-striped is-hoverable"
@@ -246,7 +249,8 @@
 	}
 </script>
 <style scoped>
-	.list-browser .list-wrap.loading-list { position: relative; min-height: 500px; }
+	.list-browser .list-wrap { position: relative; }
+	.list-browser:not(.docked) .list-wrap.loading-list { min-height: 500px; }
 	.list-browser .list-wrap table { border-bottom-right-radius: 6px; border-bottom-left-radius: 6px; }
 	.list-browser.compact > .box { box-shadow:none; border: 1px solid #dbdbdb; }
 	.list-browser.compact .list-wrap { max-height: 500px; overflow-y: auto; overflow-x: hidden; }

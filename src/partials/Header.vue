@@ -2,22 +2,22 @@
 	<div v-if="!controls.includes('hide')" class="controls" :class="{'compact': compact, 'docked': docked}">
 		<div class="container is-fluid">
 			<div class="columns">
-				<div v-if="controls.includes('create')" class="column is-narrow">
+				<div v-if="controls.includes('create')" class="column is-narrow create-button">
 					<slot name="create-button">
 						<button v-if="!createRouter"
 							type="button"
 							class="button create-button is-success is-medium"
 							@click="$emit('create')">
-							<span class="icon"><i class="fal fa-plus"></i></span>
+							<span class="icon"><i class="fa fa-plus"></i></span>
 							<span>{{createLabel}}</span>
 						</button>
 						<template v-else>
 							<router-link v-if="$route" :to="createRouter" class="button create-button is-success is-medium">
-								<span class="icon"><i class="fal fa-plus"></i></span>
+								<span class="icon"><i class="fa fa-plus"></i></span>
 								<span>{{createLabel}}</span>
 							</router-link>
 							<a v-else :href="createRouter" class="button create-button is-success is-medium">
-								<span class="icon"><i class="fal fa-plus"></i></span>
+								<span class="icon"><i class="fa fa-plus"></i></span>
 								<span>{{createLabel}}</span>
 							</a>
 						</template>
@@ -26,7 +26,7 @@
 				<div class="column">
 					<b-input @input="val => $emit('search', val)" placeholder="Search..." size="is-medium"></b-input>
 				</div>
-				<div v-if="controls.includes('archive')" class="column is-narrow">
+				<div v-if="controls.includes('archive')" class="column is-narrow archive-button">
 					<slot name="archive-button">
 						<button v-if="!archiveRouter"
 							type="button"
@@ -113,4 +113,6 @@
 	.controls.compact { position: relative; z-index: 1; box-shadow: 0 1px 5px rgba(0,0,0,0.1); }
 	.controls.docked .container.is-fluid { margin:0; }
 	.button.create-button { width: 100%; min-width: 250px; }
+	.column.create-button:empty { display: none; }
+	.column.archive-button:empty { display: none; }
 </style>

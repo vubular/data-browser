@@ -8,7 +8,7 @@
 			<template v-else>{{propValue}}</template>
 		</td>
 		<td class="is-narrow">
-			<edit :id="item.id"></edit>
+			<edit :id="item.id" style="margin-right:10px"></edit>
 			<archive :dialog="true"
 				class="is-small"
 				@click="highlight"
