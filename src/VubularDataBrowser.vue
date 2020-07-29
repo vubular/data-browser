@@ -14,6 +14,7 @@
 					v-on="$listeners">
 					<template #create-button><slot name="create-button"></slot></template>
 					<template #archive-button><slot name="archive-button"></slot></template>
+					<template #filters><slot name="filters"></slot></template>
 				</data-browser-header>
 				<div class="list-wrap" :class="{'loading-list': loadingStatus}">
 					<table v-if="viewMode=='table'"
@@ -22,7 +23,7 @@
 						<slot name="thead">
 							<default-table-head :fields="fields"
 								:data="data"
-								v-on="$listeners"></default-table-head>
+								v-on="$listeners"/>
 						</slot>
 						<tbody>
 							<slot name="item" v-for="(item, i) in items" :item="{index: i, counter: i+1+counterBump, fields:item}">

@@ -56,19 +56,17 @@
 				</div>
 			</div>
 		</div>
-		<filters v-if="showFilter && filters!='hide'">
-			<slot name="filters">
-				<template #filters></template>
-			</slot>
-		</filters>
+		<div v-if="showFilter && filters!='hide'" class="filters">
+			<div class="container is-fluid">
+				<slot name="filters"></slot>
+			</div>
+		</div>
 	</div>
 </template>
 <script>
-	import Filters from "./Filters";
 	export default {
 		name: "DataBrowserHeader",
 		props: ['controls', 'filters', 'compact', 'docked', 'label'],
-		components: { Filters },
 		computed: {
 			createLabel() {
 				var createLabel = this.$i18n ? this.$t("Create") : "Create";
@@ -131,6 +129,7 @@
 		methods: {
 			toggleFilter() {
 				this.showFilter = !this.showFilter;
+				this.$emit("filter-toggled", this.showFilter);
 			}
 		}
 	}
@@ -142,4 +141,5 @@
 	.button.create-button { width: 100%; min-width: 250px; }
 	.column.create-button:empty { display: none; }
 	.column.archive-button:empty { display: none; }
+	.filters { margin-top: 25px;margin-bottom:-30px;border-top:1px solid #ddd;padding:30px 0;background: #f6f8fa; }
 </style>
