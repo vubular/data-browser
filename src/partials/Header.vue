@@ -1,7 +1,7 @@
 <template>
 	<div v-if="!controls.includes('hide')" class="controls" :class="{'compact': compact, 'docked': docked}">
 		<div class="container is-fluid">
-			<div class="columns">
+			<div class="columns is-12">
 				<div v-if="controls.includes('create')" class="column is-narrow create-button">
 					<slot name="create-button">
 						<button v-if="!createRouter"
@@ -44,14 +44,31 @@
 						</template>
 					</slot>
 				</div>
+				<div v-if="filters!='hide'" class="column is-narrow filter-button">
+					<slot name="filter-button">
+						<button type="button"
+							class="button is-medium"
+							@click="toggleFilter">
+							<i class="fa-filter"
+								:class="{'fal has-text-grey-light': !showFilter, 'fa': showFilter}"/>
+						</button>
+					</slot>
+				</div>
 			</div>
 		</div>
+		<filters v-if="showFilter && filters!='hide'">
+			<slot name="filters">
+				<template #filters></template>
+			</slot>
+		</filters>
 	</div>
 </template>
 <script>
+	import Filters from "./Filters";
 	export default {
 		name: "DataBrowserHeader",
-		props: ['controls', 'compact', 'docked', 'label'],
+		props: ['controls', 'filters', 'compact', 'docked', 'label'],
+		components: { Filters },
 		computed: {
 			createLabel() {
 				var createLabel = this.$i18n ? this.$t("Create") : "Create";
@@ -104,6 +121,16 @@
 					}
 				}
 				return false;
+			}
+		},
+		data() {
+			return {
+				showFilter: false
+			}
+		},
+		methods: {
+			toggleFilter() {
+				this.showFilter = !this.showFilter;
 			}
 		}
 	}
