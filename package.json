@@ -1,6 +1,6 @@
 {
   "name": "@vubular/data-browser",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "vubular data browser",
   "main": "src/index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "@vubular/elements": "^0.0.20"
+    "@vubular/elements": "^0.0.21"
   },
   "repository": {
     "type": "git",
