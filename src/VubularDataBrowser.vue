@@ -231,7 +231,10 @@
 									}
 								}
 							}
-							if(i==this.data.length-1) this.loading = false;
+							if(i==this.data.length-1) {
+								this.loading = false;
+								this.$emit("search-results", this.filteredItems.length);
+							}
 						});
 					}, 250);
 				}
