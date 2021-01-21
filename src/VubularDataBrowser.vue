@@ -17,6 +17,7 @@
 					<template #filters><slot name="filters"></slot></template>
 				</data-browser-header>
 				<div class="list-wrap" :class="{'loading-list': loadingStatus}">
+					<slot name="extra-slot"></slot>
 					<table v-if="viewMode=='table'"
 						class="table is-fullwidth is-striped is-hoverable"
 						:class="{'is-narrow': view.includes('compact'), 'is-bordered': view.includes('bordered')}">
