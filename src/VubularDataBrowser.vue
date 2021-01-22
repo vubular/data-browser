@@ -64,13 +64,16 @@
 								:item="item"
 								v-on="$listeners"></default-grid-item>
 						</slot>
-						<div v-if="paginate" class="column is-12">
+<!-- 						<div v-if="paginate" class="column is-12">
 							<pagination :key="theTotal" :total="theTotal" @active="updatePage"></pagination>
-						</div>
+						</div> -->
 					</div>
 					<b-loading :is-full-page="false" :active.sync="loadingStatus"></b-loading>
 				</div>
 			</div>
+		</div>
+		<div v-if="paginate && viewMode=='grid'" class="mt-5">
+			<pagination :key="theTotal" :active="page" :total="theTotal" @active="updatePage"></pagination>
 		</div>
 	</div>
 </template>
