@@ -1,6 +1,6 @@
 {
   "name": "@vubular/data-browser",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "description": "vubular data browser",
   "main": "src/index.js",
   "scripts": {

@@ -45,7 +45,7 @@
 										<pagination :key="theTotal" :total="theTotal" @active="updatePage"></pagination>
 									</div>
 									<div class="column is-narrow has-text-really-centered">
-										Total: {{this.filteredItems.length}}
+										Total: {{filteredItems.length}}
 									</div>
 								</div>
 							</default-table-foot>
